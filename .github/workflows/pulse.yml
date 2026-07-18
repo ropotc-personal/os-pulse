@@ -1,0 +1,40 @@
+name: OS-Pulse Automated Activity
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Scraper Script
+      run: npx tsx src/scraper.ts
+
+    - name: Debug - View files
+      run: |
+        echo "=== src directory structure ==="
+        ls -R src || echo "Error reading src"
+
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name "ropotc-personal"
+        git config --global user.email "bot@ospulse.local"
+        git add .
+        git diff --quiet && git diff --staged --quiet || (git commit -m "🤖 Auto-update: Fresh issues data" && git push)
