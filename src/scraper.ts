@@ -39,7 +39,7 @@ async function fetchGoodFirstIssues() {
         } else if (rawData?.items) {
             rawIssues = rawData.items;
         } else {
-            console.log('Unknown structure', JSON.stringify(rawData).substring(0, 200));
+            console.log('Unknown structure preview:', JSON.stringify(rawData).substring(0, 200));
             throw new Error('Data format is unknown and could not be parsed.');
         }
 
@@ -53,9 +53,6 @@ async function fetchGoodFirstIssues() {
                 createdAt: fields.created_at || issue.sys?.createdAt || new Date().toISOString()
             };
         });
-
-
-
 
         const dataDir = path.join(process.cwd(), 'src', 'data');
         if (!fs.existsSync(dataDir)) {
