@@ -12,7 +12,6 @@ interface GitHubIssue {
 async function fetchGoodFirstIssues() {
     const repo = 'microsoft/TypeScript';
 
-
     const url = 'https://github.com';
 
     try {
@@ -54,6 +53,9 @@ async function fetchGoodFirstIssues() {
                 createdAt: fields.created_at || issue.sys?.createdAt || new Date().toISOString()
             };
         });
+
+
+
 
         const dataDir = path.join(process.cwd(), 'src', 'data');
         if (!fs.existsSync(dataDir)) {
